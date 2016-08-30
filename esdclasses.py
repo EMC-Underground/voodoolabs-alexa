@@ -9,10 +9,14 @@ tabstr = "	"
 class EMCSupportDates:
 	data = [] 
 	lastupdate = ""
+	productslist = []  # list containing all products in data exactly once
+	modelslist = [] # list containing all models in data exactly once
 
 	def __init__(self):
 		self.data = []
-	
+		self.productslist = []
+                self.modelslist = []
+                
 	def getlastupdate(self):
 		return self.lastupdate.isoformat()
 	
@@ -27,10 +31,38 @@ class EMCSupportDates:
 	
 	def getlenstring(self):
 		return '{:d}'.format(self.getlen())
+
+	def getproductslist(self):
+		return self.productslist
 		
+        def rebuildproductslist(self):
+                self.productslist = []
+                for x in self.data:
+                        self.add_iff_unique( self.productslist, x.getproduct() )
+
+	def getmodelslist(self):
+		return self.modelslist
+
+        def rebuildmodelslist(self):
+                self.modelslist = []
+                for x in self.data:
+                        self.add_iff_unique( self.modelslist, x.getmodel() )
+                        
+
+        # if someitem is not already in somelist, append it.
+        # somelist must be of python list type
+        # ensure that someitem is of the type you'll be expecting when you
+        # access the list
+        def add_iff_unique(self, somelist, someitem):
+               if someitem not in somelist:
+                        # add only when not already in the list
+                        somelist.append( someitem )
+
 	# Put a DataPoint on the list. dp is DataPoint
 	def push(self, dp):
 		self.data.append(dp)
+		self.add_iff_unique( self.productslist, dp.getproduct() )
+		self.add_iff_unique( self.modelslist, dp.getmodel() )
 	
 	# Get the DataPoint at index from the list. Index starts at 1
 	def get(self, index):
@@ -39,6 +71,25 @@ class EMCSupportDates:
 			return DataPoint()
 		else:
 			return self.data[index]
+
+
+	def find_matches_by_product(self, product):
+                new_esd = EMCSupportDates()
+		# iterate over the list of items and add each to the string
+		for x in self.data:
+			if x.getproduct().lower() == product.lower():
+				new_esd.push(x.clone())
+		return new_esd
+
+
+	def find_matches_by_model(self, model):
+                new_esd = EMCSupportDates()
+		# iterate over the list of items and add each to the string
+		for x in self.data:
+			if x.getmodel().lower() == model.lower():
+				new_esd.push(x.clone())
+		return new_esd
+
 	
 	def toJSON(self, indent_level):
 	
@@ -65,7 +116,7 @@ class EMCSupportDates:
 		
 		datalen = self.getlen()
 		i = 0
-		# iterate over the list if items and add each to the string
+		# iterate over the list of items and add each to the string
 		for x in self.data:
 			i += 1
 			jsonstring = jsonstring + x.toJSON(tabs + 4)
@@ -81,6 +132,27 @@ class EMCSupportDates:
 		return jsonstring
 	
 	
+	def toSimpleString(self):
+	
+		simplestring = ""
+		simplestring = simplestring + 'There are ' + self.getlenstring() + ' items in this list.\n' 
+		
+		datalen = self.getlen()
+		i = 0
+		# iterate over the list of items and add each to the string
+		for x in self.data:
+			i += 1
+			simplestring = simplestring + 'Item number ' + '{:d}'.format(i) + " of " + '{:d}'.format(datalen) + ": "
+
+			simplestring = simplestring + x.toSimpleString()
+			if i < datalen:
+				# we're not processing the last element, so add a comma
+				simplestring = simplestring + '\n '
+			else:
+				simplestring = simplestring + '.'
+								
+		#simplestring + '"File last queried on": "' + self.getlastupdate() + '",\n'
+		return simplestring
 	
 	
 	
@@ -99,7 +171,7 @@ class DataPoint:
 	eosl_updated = ""
 	
 	dictref = dict()
-	
+
 	# Instantiate by passing a dictionary object representing a row of data
 	def __init__(self, dictreference):
 		
@@ -115,6 +187,9 @@ class DataPoint:
 		self.eops_updated = dictreference['EOPS Updated?']
 		self.eosl_updated = dictreference['EOSL Updated?']
 		
+
+	def getdictreference(self):
+		return self.dictref
 		
 	def getproduct(self):
 		return self.product
@@ -150,7 +225,22 @@ class DataPoint:
 		return ['Product', 'Model', 'GA Date', 'EOL Date', 'EOPS Date', 
 					'EOSL Date', 'GA Updated?', 'EOL Updated?', 
 					'EOPS Updated?', 'EOSL Updated?']
+
+	# Instantiate as a copy of another DataPoint object 
+	def clone(self):  #dpo is a DataPoint object
+		return DataPoint(self.getdictreference())
+                
+	def toSimpleString(self):
 	
+		simplestring = ""
+		simplestring = simplestring + self.getproduct() + ' ' +  self.getmodel() + ' has the following support dates: '
+		simplestring = simplestring + 'GA Date: ' + self.getgadate() + ', '
+		simplestring = simplestring + 'EOL Date: ' + self.geteoldate() + ', '
+		simplestring = simplestring + 'EOPS Date: ' + self.geteopsdate() + ', '
+		simplestring = simplestring + 'EOSL Date: ' + self.geteosldate()
+		return simplestring
+	
+		
 	def toJSON(self, indent_level):
 	
 		tabstring1 = ""

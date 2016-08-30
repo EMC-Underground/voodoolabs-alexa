@@ -3,6 +3,7 @@
 import esdclasses
 import csv
 import UserDict
+import query_util
 
 with open('EOSL.csv', mode='rU') as csvfile:  #mode U is deprecated in Python 3.6
 	reader = csv.DictReader(csvfile, dialect='excel')
@@ -44,6 +45,9 @@ with open ('EOSL.csv', mode='rU') as csvfile:  #mode U is deprecated in Python 3
 	
 	alldata = esdclasses.EMCSupportDates()
 	alldata.setlastupdatetonow()
+	alldata.rebuildproductslist() #only to test the code path (not needed)
+	alldata.rebuildmodelslist() #only to test the code path (not needed)
+	
 	
 	with open ('emcsupportdata.json', mode='w') as jsonfile: #mode U is deprecated in Python 3.6
 		i=0
@@ -64,5 +68,44 @@ with open ('EOSL.csv', mode='rU') as csvfile:  #mode U is deprecated in Python 3
 		print(alldata.toJSON(0))
 		
 		jsonfile.close()
-	
-	csvfile.close()
+
+ 	csvfile.close()
+
+ 	productsstring = 'Products: \n'
+ 	pi = 0
+        for p in alldata.getproductslist():
+                if pi == 0:
+                        productsstring = productsstring + p
+                else:
+                        productsstring = productsstring + "\n" + p
+                pi += 1
+                
+        print(productsstring + "\n\n")
+
+        modelsstring = "Models: "
+        pm = 0
+	for m in alldata.getmodelslist():
+                if pm == 0:
+                        modelsstring = modelsstring + m
+                else:
+                        modelsstring = modelsstring + ", " + m
+                pm += 1
+        print(modelsstring + "\n")
+
+
+        #test the get by product_model pathway
+        print("\n\n -----get-by-product-model-----\n\n")
+        prod_mod_result = query_util.find_matches_by_product_model(alldata, "Symmetrix", "VMAXe")
+        print(prod_mod_result.toSimpleString() + "\n\n")
+                
+        #test the get by product pathway
+        print("\n\n -----get-by-product-----\n\n")
+        prod_result = query_util.find_matches_by_product(alldata, "Data Domain")
+        print(prod_result.toSimpleString() + "\n\n")
+                
+        #test the get by model pathway
+        print("\n\n -----get-by-model-----\n\n")
+        mod_result = query_util.find_matches_by_model(alldata, "1.0")
+        print(mod_result.toSimpleString() + "\n\n")
+          
+
