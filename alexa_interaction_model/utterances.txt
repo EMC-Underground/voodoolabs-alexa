@@ -1,0 +1,48 @@
+YesIntent yes
+YesIntent sure
+YesIntent okay
+YesIntent correct
+
+NoIntent no
+NoIntent nope
+NoIntent wrong
+NoIntent wrong answer
+
+ProceedIntent proceed
+
+
+GetProductIntent {spoken_product}
+GetProductIntent dates for {spoken_product}
+GetProductIntent support dates {spoken_product}
+GetProductIntent support dates for {spoken_product}
+GetProductIntent support info {spoken_product} 
+GetProductIntent support info for {spoken_product}
+GetProductIntent product {spoken_product}
+
+
+GetModelIntent {spoken_model}
+GetModelIntent dates for {spoken_model}
+GetModelIntent support dates {spoken_model} 
+GetModelIntent support dates for {spoken_model} 
+GetModelIntent support info {spoken_model} 
+GetModelIntent support info for {spoken_model} 
+GetModelIntent model {spoken_model}
+
+
+GetProductModelIntent {spoken_product} {spoken_model} 
+GetProductModelIntent dates for {spoken_product} {spoken_model} 
+GetProductModelIntent support dates {spoken_product} {spoken_model} 
+GetProductModelIntent support dates for {spoken_product} {spoken_model} 
+GetProductModelIntent support info {spoken_product} {spoken_model} 
+GetProductModelIntent support info for {spoken_product} {spoken_model} 
+GetProductModelIntent product {spoken_product} {spoken_model} 
+GetProductModelIntent {spoken_product} model {spoken_model} 
+GetProductModelIntent product {spoken_product} model {spoken_model} 
+
+ListProductsIntent tell me the products
+ListProductsIntent list products
+ListProductsIntent what are the products
+
+ListModelsByProductIntent tell me the models for {spoken_product}
+ListModelsByProductIntent list the models for {spoken_product}
+ListModelsByProductIntent what are the models for {spoken_product}

@@ -1,0 +1,23 @@
+welcome: Thanks for using EMC Support. Give me a product name and model name. Then I will tell you the known support dates such as end of service life for that specific model. If you are unsure what to ask for tell me to list the products.
+
+get_product: What Product and Model would you like? If you are unsure, tell me to list the products.
+
+get_model: Got it. Product has been set to {{ product }}. What Model would you like? If you are unsure, tell me to list the models for a specific product.
+
+verify_input: You said the product is {{ product }} and the model is {{ model }}. Did I get it right?
+
+right: Good job to me! Pat me on the back! Thanks for testing me. Goodbye.
+
+wrong: Ugh. I guess I dont hear so well after all. Sorry! Try again. Goodbye.
+
+repeat_product: Can you please repeat the product?
+
+repeat_model: Can you please repeat the model?
+
+read_matches: Here are your results. {{ result }}
+
+list_products: The product names I understand are {{ product_names }}. Which would you like?
+
+list_models: The models for {{ product }} I understand are {{ model_names }}. Which would you like?
+
+default: I am sorry. I did not understand that. I am not the smartest tool in the toolshed, but I do try hard. Please try again, and use different verbiage or ask me to list the products supported by me.
