@@ -1,0 +1,5 @@
+Flask==0.11
+Flask-Ask==0.7.7
+Boto3==1.3.0
+BotoCore==1.4.49
+
