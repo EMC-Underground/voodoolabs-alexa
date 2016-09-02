@@ -1,0 +1,67 @@
+{:
+
+    "intents": [{
+	
+        "intent": "YesIntent"
+	
+    }, {
+	
+        "intent": "NoIntent"
+	
+    }, {
+	
+        "intent": "ProceedIntent"
+      
+    }, {
+	
+	
+        "intent": "GetProductIntent",
+        "slots": [{
+	    
+            "name": "spoken_product",
+	    
+            "type": "PRODUCT"
+	    
+        }]	
+    }, {
+
+        "intent": "GetModelIntent",
+        "slots": [{
+	    
+            "name": "spoken_model",
+
+            "type": "MODEL"
+	    
+        }]
+    }, {
+	
+        "intent": "GetProductModelIntent",
+        "slots": [{
+	    
+            "name": "spoken_product",
+	    
+            "type": "PRODUCT"
+	    
+        }, {
+	    
+            "name": "spoken_model",
+	    
+            "type": "MODEL"
+	    
+        }]
+    }, {
+	
+        "intent": "ListProductsIntent"
+
+    }, {
+	
+        "intent": "ListModelsByProductIntent",
+        "slots": [{
+	    
+            "name": "spoken_product",
+	    
+            "type": "PRODUCT"
+	    
+        }]
+    }]
+}
