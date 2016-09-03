@@ -110,11 +110,27 @@ with open ('EOSL-HW-docu47424.csv', mode='rU') as csvfile:  #mode U is deprecate
         print(mod_result.toSimpleString() + "\n\n")
 
 
+# test reading environment variables from local file in directory
+# and setting variables from within python. To test you must have
+# a file containing the variable values other than header row.
+#
+# the primary use of this file is to supply credentials for AWS.
+#
+# this local file may be empty in command line instances where AWS
+# credentials will come from profile in ~/.aws/credentials.
 with open('EnvironmentVariables.csv', mode='rU') as csvfile:  #mode U is deprecated in Python 3.6
-	reader = csv.DictReader(csvfile, dialect='excel')
-	i=0
-	for row in reader:
-                os.environ[row['VariableName']] = row['VariableValue']
-                print("Set env variable " + row['VariableName'] + "="
-                      + row['VariableValue'])
+        reader = csv.DictReader(csvfile, dialect='excel')
+        i=0
+        for row in reader:
+                i+=1
+                try:
+                    print("Setting env variable " + row['VariableName'] + "="
+                          + row['VariableValue'])
+                    os.environ[row['VariableName']] = row['VariableValue']
+                    print("Set env variable " + row['VariableName'] + "="
+                          + os.environ[row['VariableName']])
+                except KeyError:
+                    print("Unable to lookup value " + "{:d}".format(i) +
+                          " in row of dict. Failed to set environment variable.")
         csvfile.close()
+

@@ -179,8 +179,12 @@ def default_response():
 if __name__ == '__main__':
 
     # read environment variables from local file in directory
+    #
+    # the primary use of this file is to supply credentials for AWS
+    #
     # this local file may be empty in command line instances where AWS
     # credentials will come from profile in ~/.aws/credentials.
+    #
     # In Pivotal Cloud Foundry, however, we'll have Jenkins populate this file
     # so that we can pass these secrets to the environment of the running
     # application
@@ -188,9 +192,16 @@ if __name__ == '__main__':
 	reader = csv.DictReader(csvfile, dialect='excel')
 	i=0
 	for row in reader:
-                os.environ[row['VariableName']] = row['VariableValue']
-                print("Set env variable " + row['VariableName'] + "="
-                      + row['VariableValue'])
+                i+=1
+                try:
+                    print("Setting env variable " + row['VariableName'] + "="
+                          + row['VariableValue'])
+                    os.environ[row['VariableName']] = row['VariableValue']
+                    print("Set env variable " + row['VariableName'] + "="
+                          + os.environ[row['VariableName']])
+                except KeyError:
+                    print("Unable to lookup value " + "{:d}".format(i) +
+                          " in row of dict. Failed to set environment variable.")
         csvfile.close()
 
 
