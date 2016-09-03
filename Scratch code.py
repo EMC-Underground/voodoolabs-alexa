@@ -6,7 +6,7 @@ import UserDict
 import query_util
 import os
 
-with open('EOSL.csv', mode='rU') as csvfile:  #mode U is deprecated in Python 3.6
+with open('EOSL-HW-docu47424.csv', mode='rU') as csvfile:  #mode U is deprecated in Python 3.6
 	reader = csv.DictReader(csvfile, dialect='excel')
 	i=0
 	#begin supportdates
@@ -34,7 +34,7 @@ with open('EOSL.csv', mode='rU') as csvfile:  #mode U is deprecated in Python 3.
 	csvfile.close()
 	
 	
-with open ('EOSL.csv', mode='rU') as csvfile:  #mode U is deprecated in Python 3.6
+with open ('EOSL-HW-docu47424.csv', mode='rU') as csvfile:  #mode U is deprecated in Python 3.6
         dictobj = UserDict.IterableUserDict( {'Product' : ' ', 'Model' : ' ',
                         'GA Date' : ' ', 'EOL Date' : ' ', 'EOPS Date' : ' ',
                         'EOSL Date' : ' ',
@@ -101,12 +101,12 @@ with open ('EOSL.csv', mode='rU') as csvfile:  #mode U is deprecated in Python 3
                 
         #test the get by product pathway
         print("\n\n -----get-by-product-----\n\n")
-        prod_result = query_util.find_matches_by_product(alldata, "Data Domain")
+        prod_result = query_util.find_matches_by_product(alldata, "Clariion CX")
         print(prod_result.toSimpleString() + "\n\n")
                 
         #test the get by model pathway
         print("\n\n -----get-by-model-----\n\n")
-        mod_result = query_util.find_matches_by_model(alldata, "1.0")
+        mod_result = query_util.find_matches_by_model(alldata, "Gen1")
         print(mod_result.toSimpleString() + "\n\n")
 
 

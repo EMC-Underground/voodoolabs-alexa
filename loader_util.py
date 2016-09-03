@@ -4,13 +4,13 @@ import boto3
 
 
 s3bucket = 'voodoobucket1'
-filekey = 'EOSL.csv'
-targetfile = '/tmp/' + filekey
+hw_filekey = 'EOSL-HW-docu47424.csv'
+hw_targetfile = '/tmp/' + hw_filekey
 
 
 # Read/load data from current directory. 
 def load_data():
-    result = read_data_into_csv_object(filekey)
+    result = read_data_into_csv_object(hw_filekey)
     return result
     
 
@@ -18,7 +18,7 @@ def load_data():
 # if necessary. For example, it could be "somedata.csv" or "/tmp/somedata.csv".
 def read_data_into_csv_object(filename):
 
-    with open (filekey, mode='rU') as csvfile:  #mode U is deprecated in Python 3.6
+    with open (filename, mode='rU') as csvfile:  #mode U is deprecated in Python 3.6
 	reader = csv.DictReader(csvfile, dialect='excel')
 	
 	alldata = esdclasses.EMCSupportDates()
@@ -56,7 +56,7 @@ def load_data_from_s3():
     s3 = voodoolabsS3.resource('s3')
 
     # Download object at bucket-name with key-name to tmp.txt
-    s3.Bucket(s3bucket).download_file(filekey, targetfile)
+    s3.Bucket(s3bucket).download_file(hw_filekey, hw_targetfile)
 
-    result = read_data_into_csv_object(targetfile)
+    result = read_data_into_csv_object(hw_targetfile)
     return result
