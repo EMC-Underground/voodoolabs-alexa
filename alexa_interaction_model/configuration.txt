@@ -1,0 +1,9 @@
+Endpoint: 
+	HTTPS
+	https://voodoo1.cfapps.io
+
+Account Linking: 
+	No
+
+SSL Certificate: 
+	My development endpoint is a subdomain of a domain that has a wildcard certificate from a certificate authority

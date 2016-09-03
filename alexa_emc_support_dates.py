@@ -29,6 +29,8 @@ model = "unspecified"
 def give_welcome():
 
     welcome_msg = render_template('welcome')
+    session.attributes['product'] = ""
+    session.attributes['model'] = ""
 
     return question(welcome_msg)
 
@@ -115,6 +117,8 @@ def list_products():
 
     products_supported = query_util.get_list_of_products_string(alldata, ", ")
     session.attributes['product_supported'] = products_supported
+    session.attributes['product'] = ""
+    session.attributes['model'] = ""
 
     msg = render_template('list_products', product_names=products_supported)
 
@@ -130,6 +134,8 @@ def list_models_for_product(spoken_product):
 
     models_supported = query_util.get_list_of_models_by_product_string(alldata, product, ", ")
 
+    session.attributes['product'] = spoken_product
+    session.attributes['model'] = ""
     session.attributes['models_supported_by_product'] = models_supported
     
     msg = render_template('list_models', product=product, model_names=models_supported)
@@ -142,6 +148,8 @@ def list_models_for_product(spoken_product):
 def declare_right_answer():
 
     msg = render_template('right')
+    session.attributes['product'] = ""
+    session.attributes['model'] = ""
 
     return statement(msg)
 
@@ -151,6 +159,8 @@ def declare_right_answer():
 def declare_wrong_answer():
 
     msg = render_template('wrong')
+    session.attributes['product'] = ""
+    session.attributes['model'] = ""
 
     return statement(msg)
 
@@ -160,6 +170,8 @@ def declare_wrong_answer():
 def default_response():
 
     msg = render_template('default')
+    session.attributes['product'] = ""
+    session.attributes['model'] = ""
 
     return question(msg)
 
