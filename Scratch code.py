@@ -4,6 +4,7 @@ import esdclasses
 import csv
 import UserDict
 import query_util
+import os
 
 with open('EOSL.csv', mode='rU') as csvfile:  #mode U is deprecated in Python 3.6
 	reader = csv.DictReader(csvfile, dialect='excel')
@@ -107,5 +108,13 @@ with open ('EOSL.csv', mode='rU') as csvfile:  #mode U is deprecated in Python 3
         print("\n\n -----get-by-model-----\n\n")
         mod_result = query_util.find_matches_by_model(alldata, "1.0")
         print(mod_result.toSimpleString() + "\n\n")
-          
 
+
+with open('EnvironmentVariables.csv', mode='rU') as csvfile:  #mode U is deprecated in Python 3.6
+	reader = csv.DictReader(csvfile, dialect='excel')
+	i=0
+	for row in reader:
+                os.environ[row['VariableName']] = row['VariableValue']
+                print("Set env variable " + row['VariableName'] + "="
+                      + row['VariableValue'])
+        csvfile.close()

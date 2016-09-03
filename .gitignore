@@ -6,6 +6,7 @@ logs
 pids
 *.pid
 *.swp
+emcsupportdata.json
 
 # Compiled python files
 *.pyc
@@ -15,7 +16,6 @@ old
 
 # files to keep secret (keep them out of GitHub!!!)
 AWSconfig.json
-
 
 
 

@@ -4,6 +4,7 @@ import UserDict
 import loader_util
 import query_util
 import os
+import csv
 
 from random import randint
 
@@ -164,6 +165,22 @@ def default_response():
 
 
 if __name__ == '__main__':
+
+    # read environment variables from local file in directory
+    # this local file may be empty in command line instances where AWS
+    # credentials will come from profile in ~/.aws/credentials.
+    # In Pivotal Cloud Foundry, however, we'll have Jenkins populate this file
+    # so that we can pass these secrets to the environment of the running
+    # application
+    with open('EnvironmentVariables.csv', mode='rU') as csvfile:  #mode U is deprecated in Python 3.6
+	reader = csv.DictReader(csvfile, dialect='excel')
+	i=0
+	for row in reader:
+                os.environ[row['VariableName']] = row['VariableValue']
+                print("Set env variable " + row['VariableName'] + "="
+                      + row['VariableValue'])
+        csvfile.close()
+
 
     port = os.getenv("PORT",None)       # important for PCF
     if port == None:
