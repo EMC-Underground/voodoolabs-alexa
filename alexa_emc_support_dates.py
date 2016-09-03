@@ -191,6 +191,7 @@ if __name__ == '__main__':
     with open('EnvironmentVariables.csv', mode='rU') as csvfile:  #mode U is deprecated in Python 3.6
 	reader = csv.DictReader(csvfile, dialect='excel')
 	i=0
+	
 	for row in reader:
                 i+=1
                 try:
@@ -212,8 +213,7 @@ if __name__ == '__main__':
     else:
         # If we're running in Cloud Foundry, we'll end up here
         print("Setting port to: " + port)
-        #portint = '{0:d}'.format(port)
-        portint = port
+        portint = int(port)
         # we start flask with host and port for PCF; non-PCF only requires debug
         app.run(debug=True, host='0.0.0.0',port=portint) 
 
