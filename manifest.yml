@@ -3,4 +3,4 @@ applications:
 - name: voodoo1
   memory: 512M
   disk_quota: 500MB
-  command: python alexapcf.py
+  command: python alexa_emc_support_dates.py

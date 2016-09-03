@@ -1,0 +1,21 @@
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.swp
+
+# Compiled python files
+*.pyc
+
+# Old stuff
+old
+
+# files to keep secret (keep them out of GitHub!!!)
+AWSconfig.json
+
+
+
+

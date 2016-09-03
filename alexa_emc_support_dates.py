@@ -3,6 +3,7 @@ import esdclasses
 import UserDict
 import loader_util
 import query_util
+import os
 
 from random import randint
 
@@ -89,11 +90,9 @@ def product_model_answer(spoken_product, spoken_model):
 
     session.attributes['model'] = model
 
-    alldata = loader_util.load_data()
+    alldata = loader_util.load_data_from_s3()
 
     result = query_util.find_matches_by_product_model(alldata, product, model)
-    
-    #print(alldata.toJSON(0))
     
     #msg = render_template('verify_input',
     #                      product=session.attributes['product'],
@@ -111,7 +110,7 @@ def product_model_answer(spoken_product, spoken_model):
 
 def list_products():
 
-    alldata = loader_util.load_data()
+    alldata = loader_util.load_data_from_s3()
 
     products_supported = query_util.get_list_of_products_string(alldata, ", ")
     session.attributes['product_supported'] = products_supported
@@ -126,7 +125,7 @@ def list_products():
 def list_models_for_product(spoken_product):
 
     product = spoken_product;
-    alldata = loader_util.load_data()
+    alldata = loader_util.load_data_from_s3()
 
     models_supported = query_util.get_list_of_models_by_product_string(alldata, product, ", ")
 
@@ -166,7 +165,17 @@ def default_response():
 
 if __name__ == '__main__':
 
-    app.run(debug=True)
+    port = os.getenv("PORT",None)       # important for PCF
+    if port == None:
+        # We're probably running from command line
+        app.run(debug=True)
+    else:
+        # If we're running in Cloud Foundry, we'll end up here
+        print("Setting port to: " + port)
+        #portint = '{0:d}'.format(port)
+        portint = port
+        # we start flask with host and port for PCF; non-PCF only requires debug
+        app.run(debug=True, host='0.0.0.0',port=portint) 
 
 
 
