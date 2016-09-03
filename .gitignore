@@ -16,6 +16,6 @@ old
 
 # files to keep secret (keep them out of GitHub!!!)
 AWSconfig.json
-
+EnvironmentVariables.csv
 
 
