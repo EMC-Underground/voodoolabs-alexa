@@ -38,7 +38,8 @@ class EMCSupportDates:
         def rebuildproductslist(self):
                 self.productslist = []
                 for x in self.data:
-                        self.add_iff_unique( self.productslist, x.getproduct() )
+                        self.add_iff_unique( self.productslist,
+                                             x.getproduct().strip() )
 
 	def getmodelslist(self):
 		return self.modelslist
@@ -46,7 +47,8 @@ class EMCSupportDates:
         def rebuildmodelslist(self):
                 self.modelslist = []
                 for x in self.data:
-                        self.add_iff_unique( self.modelslist, x.getmodel() )
+                        self.add_iff_unique( self.modelslist,
+                                             x.getmodel().strip() )
                         
 
         # if someitem is not already in somelist, append it.
