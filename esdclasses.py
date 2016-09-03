@@ -77,8 +77,13 @@ class EMCSupportDates:
                 new_esd = EMCSupportDates()
 		# iterate over the list of items and add each to the string
 		for x in self.data:
-			if x.getproduct().lower() == product.lower():
+                        supplied = new_esd.clean_string_for_comparison(product)
+                        thisdp = new_esd.clean_string_for_comparison(x.getproduct())
+                        #print("-----comparing: " + supplied + " == " + thisdp)
+			if thisdp == supplied:
 				new_esd.push(x.clone())
+				#print("------- MATCH")
+				#print(x.toSimpleString())
 		return new_esd
 
 
@@ -86,9 +91,33 @@ class EMCSupportDates:
                 new_esd = EMCSupportDates()
 		# iterate over the list of items and add each to the string
 		for x in self.data:
-			if x.getmodel().lower() == model.lower():
+                        supplied = new_esd.clean_string_for_comparison(model)
+                        thisdp = new_esd.clean_string_for_comparison(x.getmodel())
+                        #print("-----comparing: " + supplied + " == " + thisdp)
+			if thisdp == supplied:
 				new_esd.push(x.clone())
+				#print("------- MATCH")
+                                #print(x.toSimpleString())
 		return new_esd
+
+        # clean up a string so that it can be compared
+        def clean_string_for_comparison(self, astring):
+                newstring = astring.lower()
+
+                # remove commas (yes, Alexa might insert them)
+                newstring = newstring.replace(",", "")
+
+                # remove spaces (often happens when converting from speech)
+                newstring = newstring.replace(" ", "")
+
+                # some of the data points have parentheses
+                newstring = newstring.replace(")", "")
+                newstring = newstring.replace("(", "")
+
+                # some of the data points have dashes
+                newstring = newstring.replace("-", "")
+
+                return newstring
 
 	
 	def toJSON(self, indent_level):

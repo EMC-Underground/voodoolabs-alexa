@@ -16,6 +16,14 @@ repeat_model: Can you please repeat the model?
 
 read_matches: Here are your results. {{ result }}
 
+no_matching_products: I did not find any products with the name {{ product }}. Please try again or ask me to list the products I understand.
+
+no_matching_models: I did not find a model with the name {{ model }} for any product. Please try again.
+
+no_matching_model_for_product: I did not find any models with the name {{ model }} for product {{ product }}.
+
+no_matching_product_model: I did not find any product models with the product name {{ product }} and model name {{ model }}. Please try changing the product or model in your search. 
+
 list_products: The product names I understand are {{ product_names }}. Which would you like?
 
 list_models: The models for {{ product }} I understand are {{ model_names }}. Which would you like?

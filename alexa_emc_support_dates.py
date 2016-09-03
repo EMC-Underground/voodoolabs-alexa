@@ -50,9 +50,42 @@ def product_answer(spoken_product):
 
     product = spoken_product;
 
-    session.attributes['product'] = product
+    alldata = loader_util.load_data_from_s3()
+
+    # ensure that this is a valid (matching) product
+    result = query_util.find_matches_by_product(alldata, product)
+
+    if result.getlen() < 1:
+        session.attributes['answer'] = "No match"
+        msg = render_template('no_matching_products', product=product)
+    else:
+        session.attributes['product'] = product
+
     
-    msg = render_template('get_model', product=session.attributes['product'])
+    # session.attributes['model'] can be unset or empty; check for empty
+    try:
+        if session.attributes['model'] == "":
+            # remove it because it is empty
+            session.attributes.pop('model')
+            msg = render_template('get_model', product=product)
+        else:
+            # it's not empty, so execute a query for product model
+            model = session.attributes['model'];
+
+            result = query_util.find_matches_by_product_model(result, product, model)
+
+            if result.getlen() < 1:
+                session.attributes['answer'] = "No match"
+                msg = render_template('no_matching_product_model', product=product, model=model)
+            else:
+                session.attributes['answer'] = result.toSimpleString()
+                msg = render_template('read_matches', result=session.attributes['answer'])
+            return statement(msg)
+    except KeyError:
+        # model is unset. prompt user for the model
+        session.attributes['answer'] = ""
+        msg = render_template('get_model', product=product)
+        
 
     return question(msg)
 
@@ -61,13 +94,51 @@ def product_answer(spoken_product):
 
 def model_answer(spoken_model):
 
+    alldata = loader_util.load_data_from_s3()
+
     model = spoken_model;
 
-    session.attributes['model'] = model
-    
-    msg = render_template('verify_input',
-                          product=session.attributes['product'],
-                          model=session.attributes['model'])
+    result = query_util.find_matches_by_model(alldata, model)
+
+    if result.getlen() < 1:
+        session.attributes['answer'] = "No match"
+        msg = render_template('no_matching_models', model=model)
+        return question(msg)
+    else:
+        session.attributes['model'] = model   
+
+    # session.attributes['product'] can be unset or empty; check for empty
+    try:
+        if session.attributes['product'] == "":
+            # remove it because it is empty
+            session.attributes.pop('product')
+    except KeyError:
+        # it's unset. Do something meaningless to handle the expected KeyError
+        session.attributes['answer'] = ""
+        
+    # session.attributes['product'] can be unset.
+    # We know it isn't empty because we checked above.
+    try:
+        # if this succeeds, we're querying for a model and we already know
+        # the product... so query for a product+model combination
+        product=session.attributes['product']
+        result = query_util.find_matches_by_product_model(alldata, product, model)
+
+        if result.getlen() < 1:
+            session.attributes['answer'] = "No match"
+            msg = render_template('no_matching_product_model', product=product, model=model)
+        else:
+            session.attributes['answer'] = result.toSimpleString()
+            msg = render_template('read_matches', result=session.attributes['answer'])
+            return statement(msg)
+        
+    except KeyError:
+        # it's unset. This means we're querying for a model WITHOUT knowing product.
+        
+        # we alredy have the query from above so we just store the answer
+        session.attributes['answer'] = result.toSimpleString()
+        msg = render_template('read_matches', result=session.attributes['answer'])
+        return statement(msg)
 
     return question(msg)
 
@@ -101,11 +172,14 @@ def product_model_answer(spoken_product, spoken_model):
     #                      product=session.attributes['product'],
     #                      model=session.attributes['model'])
 
-    session.attributes['answer'] = result.toSimpleString()
+    if result.getlen() < 1:
+        session.attributes['answer'] = "No match"
+        msg = render_template('no_matching_product_model', product=product, model=model)
+    else:
+        session.attributes['answer'] = result.toSimpleString()
+        msg = render_template('read_matches', result=session.attributes['answer'])
 
-    msg = render_template('read_matches', result=session.attributes['answer'])
-
-    return question(msg)
+    return statement(msg)
 
 
 
