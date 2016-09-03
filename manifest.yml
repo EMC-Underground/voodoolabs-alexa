@@ -3,6 +3,4 @@ applications:
 - name: voodoo1
   memory: 512M
   disk_quota: 500MB
-  domain: run.pivotal.io
-  no-route: true
-  command: alexa_emc_support_dates_PCF.py
+  command: python alexapcf.py
