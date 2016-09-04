@@ -257,6 +257,13 @@ class DataPoint:
 					'EOSL Date', 'GA Updated?', 'EOL Updated?', 
 					'EOPS Updated?', 'EOSL Updated?']
 
+        def fill_string_if_empty(self, astring):
+                resultstring = astring
+                if astring == "":
+                        resultstring = "Not Set"
+                return resultstring
+                        
+
 	# Instantiate as a copy of another DataPoint object 
 	def clone(self):  #dpo is a DataPoint object
 		return DataPoint(self.getdictreference())
@@ -265,10 +272,10 @@ class DataPoint:
 	
 		simplestring = ""
 		simplestring = simplestring + self.getproduct() + ' ' +  self.getmodel() + ' has the following support dates: '
-		simplestring = simplestring + 'GA Date: ' + self.getgadate() + ', '
-		simplestring = simplestring + 'EOL Date: ' + self.geteoldate() + ', '
-		simplestring = simplestring + 'EOPS Date: ' + self.geteopsdate() + ', '
-		simplestring = simplestring + 'EOSL Date: ' + self.geteosldate()
+		simplestring = simplestring + 'GA Date: ' + self.fill_string_if_empty(self.getgadate()) + ', '
+		simplestring = simplestring + 'EOL Date: ' + self.fill_string_if_empty(self.geteoldate()) + ', '
+		simplestring = simplestring + 'EOPS Date: ' + self.fill_string_if_empty(self.geteopsdate()) + ', '
+		simplestring = simplestring + 'EOSL Date: ' + self.fill_string_if_empty(self.geteosldate())
 		return simplestring
 	
 		
