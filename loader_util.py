@@ -50,7 +50,15 @@ def load_data_from_s3():
     # First, get a session using the voodoolabs1 user credentials
     # Note: These voodoolabs1 credentials MUST be configured as a profile
     #       in ~/.aws/credentials
-    voodoolabsS3 = boto3.Session(profile_name='voodoolabs1')
+    try:
+        voodoolabsS3 = boto3.Session(profile_name='voodoolabs1')
+    except ProfileNotFound:
+        print("Unable to find the profile voodoolabs1. Trying default AWS creds.")
+        try:
+            voodoolabsS3 = boto3.Session()
+        except ProfileNotFound:
+            print("Unable to use default AWS credentials. Returning empty list.")
+            return esdclasses.EMCSupportDates()
     
     # Let's use Amazon S3
     s3 = voodoolabsS3.resource('s3')
