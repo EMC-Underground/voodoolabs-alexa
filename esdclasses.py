@@ -272,10 +272,10 @@ class DataPoint:
 	
 		simplestring = ""
 		simplestring = simplestring + self.getproduct() + ' ' +  self.getmodel() + ' has the following support dates: '
-		simplestring = simplestring + initialsInString(GA) + 'Date: ' + self.fill_string_if_empty(self.getgadate()) + ', '
-		simplestring = simplestring + initialsInString(EOL) + 'Date: ' + self.fill_string_if_empty(self.geteoldate()) + ', '
-		simplestring = simplestring + initialsInString(EOPS) + 'Date: ' + self.fill_string_if_empty(self.geteopsdate()) + ', '
-		simplestring = simplestring + initialsInString(EOSL) + 'Date: ' + self.fill_string_if_empty(self.geteosldate())
+		simplestring = simplestring + initialsInString('GA') + ' Date: ' + self.fill_string_if_empty(self.getgadate()) + ', '
+		simplestring = simplestring + initialsInString('EOL') + ' Date: ' + self.fill_string_if_empty(self.geteoldate()) + ', '
+		simplestring = simplestring + initialsInString('EOPS') + ' Date: ' + self.fill_string_if_empty(self.geteopsdate()) + ', '
+		simplestring = simplestring + initialsInString('EOSL') + ' Date: ' + self.fill_string_if_empty(self.geteosldate())
 		return simplestring
 
         def initialsInString(self):
