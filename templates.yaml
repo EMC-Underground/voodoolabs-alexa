@@ -6,7 +6,7 @@ get_model: Got it. Product has been set to {{ product }}. What Model would you l
 
 verify_input: You said the product is {{ product }} and the model is {{ model }}. Did I get it right?
 
-right: Good job to me! Pat me on the back! Thanks for testing me. Goodbye.
+right: Goodbye
 
 wrong: Ugh. I guess I dont hear so well after all. Sorry! Try again. Goodbye.
 
